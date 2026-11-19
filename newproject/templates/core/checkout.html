@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout | KILN & CO.{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    
+    <div class="mb-10">
+        <h1 class="text-3xl font-extrabold text-stone-900 tracking-tight">Express Checkout</h1>
+        <p class="text-xs text-stone-500 mt-1">Please provide your shipping details to receive your handcrafted pottery mugs</p>
+    </div>
+
+    <form method="POST" class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        {% csrf_token %}
+
+        <!-- Left Column: Shipping & Payment (7 cols) -->
+        <div class="lg:col-span-7 space-y-8">
+            
+            <!-- Shipping Information Card -->
+            <div class="bg-white p-8 rounded-3xl border border-stone-200/80 shadow-sm space-y-6">
+                <div class="flex items-center gap-3 pb-4 border-b border-stone-100">
+                    <div class="w-8 h-8 rounded-xl bg-clay-100 text-clay-700 flex items-center justify-center font-bold text-xs">1</div>
+                    <h2 class="font-heading font-bold text-lg text-stone-900">Shipping &amp; Delivery Address</h2>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                    <div class="sm:col-span-2">
+                        <label class="block font-semibold text-stone-700 mb-1">Full Recipient Name *</label>
+                        <input type="text" name="full_name" required placeholder="e.g. Eleanor Vance" class="w-full bg-stone-50 border border-stone-200 rounded-xl p-3 text-stone-800 focus:outline-none focus:ring-1 focus:ring-clay-500">
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-stone-700 mb-1">Email Address (for order updates) *</label>
+                        <input type="email" name="email" required placeholder="eleanor@example.com" class="w-full bg-stone-50 border border-stone-200 rounded-xl p-3 text-stone-800 focus:outline-none focus:ring-1 focus:ring-clay-500">
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-stone-700 mb-1">Phone Number (for courier) *</label>
+                        <input type="tel" name="phone" required placeholder="+1 (555) 019-2834" class="w-full bg-stone-50 border border-stone-200 rounded-xl p-3 text-stone-800 focus:outline-none focus:ring-1 focus:ring-clay-500">
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label class="block font-semibold text-stone-700 mb-1">Street Address *</label>
+                        <input type="text" name="address" required placeholder="42 Artisan Way, Suite 100" class="w-full bg-stone-50 border border-stone-200 rounded-xl p-3 text-stone-800 focus:outline-none focus:ring-1 focus:ring-clay-500">
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-stone-700 mb-1">City *</label>
+                        <input type="text" name="city" required placeholder="Portland" class="w-full bg-stone-50 border border-stone-200 rounded-xl p-3 text-stone-800 focus:outline-none focus:ring-1 focus:ring-clay-500">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block font-semibold text-stone-700 mb-1">State / Province</label>
+                            <input type="text" name="state" placeholder="Oregon" class="w-full bg-stone-50 border border-stone-200 rounded-xl p-3 text-stone-800 focus:outline-none focus:ring-1 focus:ring-clay-500">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-stone-700 mb-1">Postal Code *</label>
+                            <input type="text" name="postal_code" required placeholder="97201" class="w-full bg-stone-50 border border-stone-200 rounded-xl p-3 text-stone-800 focus:outline-none focus:ring-1 focus:ring-clay-500">
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label class="block font-semibold text-stone-700 mb-1">Special Delivery Instructions (Optional)</label>
+                        <textarea name="order_notes" rows="2" placeholder="Leave at front porch, gate code #4492, fragile pottery..." class="w-full bg-stone-50 border border-stone-200 rounded-xl p-3 text-stone-800 focus:outline-none focus:ring-1 focus:ring-clay-500"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Method Card -->
+            <div class="bg-white p-8 rounded-3xl border border-stone-200/80 shadow-sm space-y-4">
+                <div class="flex items-center gap-3 pb-4 border-b border-stone-100">
+                    <div class="w-8 h-8 rounded-xl bg-clay-100 text-clay-700 flex items-center justify-center font-bold text-xs">2</div>
+                    <h2 class="font-heading font-bold text-lg text-stone-900">Select Payment Method</h2>
+                </div>
+
+                <div class="space-y-3">
+                    
+                    <!-- Cash on Delivery -->
+                    <label class="flex items-start gap-3 p-4 rounded-2xl border border-stone-200 cursor-pointer hover:border-clay-500 transition has-[:checked]:border-clay-700 has-[:checked]:bg-clay-50/50">
+                        <input type="radio" name="payment_method" value="cod" checked class="mt-1 text-clay-700 focus:ring-clay-500">
+                        <div>
+                            <span class="block font-bold text-xs text-stone-900">Cash on Delivery (COD)</span>
+                            <span class="block text-[11px] text-stone-500">Pay in cash directly to courier upon arrival of your package.</span>
+                        </div>
+                    </label>
+
+                    <!-- Credit / Debit Card -->
+                    <label class="flex items-start gap-3 p-4 rounded-2xl border border-stone-200 cursor-pointer hover:border-clay-500 transition has-[:checked]:border-clay-700 has-[:checked]:bg-clay-50/50">
+                        <input type="radio" name="payment_method" value="card" class="mt-1 text-clay-700 focus:ring-clay-500">
+                        <div>
+                            <span class="block font-bold text-xs text-stone-900">Credit / Debit Card (Online Sandbox)</span>
+                            <span class="block text-[11px] text-stone-500">Instant test card payment (mock checkout integration).</span>
+                        </div>
+                    </label>
+
+                    <!-- Direct Bank Transfer -->
+                    <label class="flex items-start gap-3 p-4 rounded-2xl border border-stone-200 cursor-pointer hover:border-clay-500 transition has-[:checked]:border-clay-700 has-[:checked]:bg-clay-50/50">
+                        <input type="radio" name="payment_method" value="bank" class="mt-1 text-clay-700 focus:ring-clay-500">
+                        <div>
+                            <span class="block font-bold text-xs text-stone-900">Direct Bank Transfer</span>
+                            <span class="block text-[11px] text-stone-500">Bank deposit instructions will be included on your receipt.</span>
+                        </div>
+                    </label>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Order Review (5 cols) -->
+        <div class="lg:col-span-5 space-y-6">
+            <div class="bg-white p-8 rounded-3xl border border-stone-200/80 shadow-sm space-y-6 sticky top-28">
+                <h2 class="font-heading font-bold text-lg text-stone-900 pb-4 border-b border-stone-100">Your Order ({{ cart.total_items }} items)</h2>
+
+                <!-- Items Preview -->
+                <div class="space-y-4 max-h-72 overflow-y-auto pr-2 divide-y divide-stone-100">
+                    {% for item in cart_items %}
+                    <div class="pt-3 first:pt-0 flex items-center justify-between gap-4 text-xs">
+                        <div class="flex items-center gap-3">
+                            <img src="{{ item.product.image_url }}" class="w-12 h-12 rounded-lg object-cover bg-stone-50 border border-stone-100">
+                            <div>
+                                <span class="font-bold text-stone-900 line-clamp-1">{{ item.product.name }}</span>
+                                <span class="text-stone-400 text-[11px]">Qty: {{ item.quantity }}</span>
+                                {% if item.custom_engraving %}
+                                <div class="text-[10px] text-amber-700 italic">"{{ item.custom_engraving }}"</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <span class="font-bold text-stone-800">${{ item.total_price }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Price Breakdown -->
+                <div class="space-y-2 pt-4 border-t border-stone-100 text-xs">
+                    <div class="flex justify-between text-stone-600">
+                        <span>Subtotal</span>
+                        <span class="font-semibold text-stone-900">${{ subtotal }}</span>
+                    </div>
+                    {% if discount > 0 %}
+                    <div class="flex justify-between text-emerald-700 font-semibold">
+                        <span>Discount Coupon</span>
+                        <span>-${{ discount|floatformat:2 }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="flex justify-between text-stone-600">
+                        <span>Shipping</span>
+                        {% if shipping == 0 %}
+                        <span class="font-bold text-emerald-600 uppercase">FREE</span>
+                        {% else %}
+                        <span class="font-semibold text-stone-900">${{ shipping }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="flex justify-between items-baseline pt-2 border-t border-stone-100">
+                        <span class="font-heading font-bold text-base text-stone-900">Total to Pay</span>
+                        <span class="font-heading font-extrabold text-2xl text-stone-900">${{ total|floatformat:2 }}</span>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full py-4 bg-clay-700 hover:bg-clay-800 text-white font-bold rounded-2xl shadow-xl transition flex items-center justify-center gap-2 group">
+                    <i data-lucide="check-circle" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                    <span>Confirm &amp; Place Order</span>
+                </button>
+
+                <p class="text-[10px] text-center text-stone-400">
+                    By clicking Confirm, you agree to our 30-day ceramic care and replacement guarantee.
+                </p>
+            </div>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

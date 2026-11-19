@@ -1,0 +1,7 @@
+/* Custom Store Styling */
+.mug-shadow {
+    box-shadow: 0 10px 30px -5px rgba(44, 32, 23, 0.08), 0 8px 10px -6px rgba(44, 32, 23, 0.04);
+}
+.mug-shadow-hover:hover {
+    box-shadow: 0 20px 35px -10px rgba(44, 32, 23, 0.15), 0 10px 10px -5px rgba(44, 32, 23, 0.06);
+}

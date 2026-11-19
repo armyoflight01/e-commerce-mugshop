@@ -1,0 +1,276 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} | KILN & CO.{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    
+    <!-- Breadcrumb -->
+    <nav class="text-xs text-stone-500 mb-8 flex items-center gap-2">
+        <a href="{% url 'home' %}" class="hover:text-clay-700">Home</a>
+        <span>/</span>
+        <a href="{% url 'product_list' %}" class="hover:text-clay-700">Shop</a>
+        <span>/</span>
+        <a href="{% url 'product_list' %}?category={{ product.category.slug }}" class="hover:text-clay-700">{{ product.category.name }}</a>
+        <span>/</span>
+        <span class="text-stone-900 font-semibold">{{ product.name }}</span>
+    </nav>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        
+        <!-- Left: Image Gallery Showcase -->
+        <div class="lg:col-span-7 space-y-4">
+            <div class="bg-white rounded-3xl p-4 border border-stone-200/80 shadow-sm overflow-hidden relative group">
+                <img id="main-image" src="{{ product.image_url }}" alt="{{ product.name }}" 
+                     class="w-full h-[480px] object-cover rounded-2xl transition duration-500 group-hover:scale-105">
+
+                {% if product.discount_percent > 0 %}
+                <span class="absolute top-8 left-8 bg-terracotta-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                    Save {{ product.discount_percent }}% OFF
+                </span>
+                {% endif %}
+            </div>
+
+            <!-- Thumbnail row if secondary image exists -->
+            {% if product.secondary_image_url %}
+            <div class="flex gap-4">
+                <button onclick="document.getElementById('main-image').src='{{ product.image_url }}'" 
+                        class="w-20 h-20 rounded-xl overflow-hidden border-2 border-clay-600 focus:outline-none">
+                    <img src="{{ product.image_url }}" class="w-full h-full object-cover">
+                </button>
+                <button onclick="document.getElementById('main-image').src='{{ product.secondary_image_url }}'" 
+                        class="w-20 h-20 rounded-xl overflow-hidden border-2 border-transparent hover:border-clay-400 focus:outline-none focus:border-clay-600">
+                    <img src="{{ product.secondary_image_url }}" class="w-full h-full object-cover">
+                </button>
+            </div>
+            {% endif %}
+
+            <!-- Workshop Guarantee Pills -->
+            <div class="grid grid-cols-3 gap-4 pt-4">
+                <div class="bg-white p-4 rounded-2xl border border-stone-200/70 text-center">
+                    <i data-lucide="package-check" class="w-5 h-5 text-clay-700 mx-auto mb-1.5"></i>
+                    <div class="text-xs font-bold text-stone-900">Breakage Proof</div>
+                    <div class="text-[10px] text-stone-500">Free transit replacement</div>
+                </div>
+                <div class="bg-white p-4 rounded-2xl border border-stone-200/70 text-center">
+                    <i data-lucide="sparkles" class="w-5 h-5 text-amber-600 mx-auto mb-1.5"></i>
+                    <div class="text-xs font-bold text-stone-900">Food Safe</div>
+                    <div class="text-[10px] text-stone-500">100% Lead &amp; toxin free</div>
+                </div>
+                <div class="bg-white p-4 rounded-2xl border border-stone-200/70 text-center">
+                    <i data-lucide="rotate-ccw" class="w-5 h-5 text-emerald-600 mx-auto mb-1.5"></i>
+                    <div class="text-xs font-bold text-stone-900">30-Day Returns</div>
+                    <div class="text-[10px] text-stone-500">No questions asked</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Product Purchase Panel -->
+        <div class="lg:col-span-5 bg-white p-8 rounded-3xl border border-stone-200/80 shadow-sm space-y-6">
+            
+            <!-- Category & Rating -->
+            <div class="flex items-center justify-between">
+                <a href="{% url 'product_list' %}?category={{ product.category.slug }}" class="text-xs font-bold uppercase tracking-wider text-clay-700 bg-clay-50 px-3 py-1 rounded-full">
+                    {{ product.category.name }}
+                </a>
+                <div class="flex items-center gap-1.5 text-xs text-stone-600">
+                    <div class="flex text-amber-500">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <span class="font-bold text-stone-900">{{ product.rating }}</span>
+                    <a href="#reviews" class="text-stone-400 hover:text-stone-700 underline">({{ product.reviews_count }} reviews)</a>
+                </div>
+            </div>
+
+            <!-- Title & Tagline -->
+            <div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight">{{ product.name }}</h1>
+                <p class="text-sm text-stone-500 mt-1.5 font-normal">{{ product.tagline }}</p>
+            </div>
+
+            <!-- Price & Stock -->
+            <div class="flex items-baseline justify-between pt-2 border-t border-stone-100">
+                <div class="flex items-baseline gap-3">
+                    {% if product.discount_price %}
+                    <span class="text-3xl font-extrabold text-stone-900">${{ product.discount_price }}</span>
+                    <span class="text-base text-stone-400 line-through">${{ product.price }}</span>
+                    <span class="text-xs font-bold text-terracotta-600">Save ${{ product.price|add:"-product.discount_price"|default:"" }}</span>
+                    {% else %}
+                    <span class="text-3xl font-extrabold text-stone-900">${{ product.price }}</span>
+                    {% endif %}
+                </div>
+
+                <div>
+                    {% if product.in_stock %}
+                    <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> In Stock ({{ product.stock }})
+                    </span>
+                    {% else %}
+                    <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-rose-700 bg-rose-50 px-2.5 py-1 rounded-full">
+                        Sold Out
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Description -->
+            <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                {{ product.description }}
+            </p>
+
+            <!-- Specifications Table -->
+            <div class="bg-stone-50 rounded-2xl p-4 border border-stone-200/60 text-xs space-y-2">
+                <div class="flex justify-between py-1 border-b border-stone-200/60">
+                    <span class="text-stone-500">Capacity</span>
+                    <span class="font-semibold text-stone-800">{{ product.capacity }}</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-stone-200/60">
+                    <span class="text-stone-500">Material</span>
+                    <span class="font-semibold text-stone-800">{{ product.material }}</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-stone-200/60">
+                    <span class="text-stone-500">Dimensions</span>
+                    <span class="font-semibold text-stone-800">{{ product.dimensions }}</span>
+                </div>
+                <div class="flex justify-between py-1">
+                    <span class="text-stone-500">Dishwasher / Microwave</span>
+                    <span class="font-semibold text-stone-800">
+                        {% if product.dishwasher_safe %}Dishwasher Safe{% endif %}{% if product.microwave_safe %} • Microwave Safe{% endif %}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Add to Cart Form -->
+            <form action="{% url 'cart_add' product_id=product.id %}" method="POST" class="space-y-4 pt-2">
+                {% csrf_token %}
+
+                {% if product.allow_custom_engraving %}
+                <div>
+                    <label class="block text-xs font-bold text-stone-800 uppercase tracking-wider mb-1 flex items-center justify-between">
+                        <span>Personalized Custom Engraving <span class="text-clay-600 font-normal lowercase">(Optional • Free)</span></span>
+                        <i data-lucide="edit-3" class="w-3.5 h-3.5 text-stone-400"></i>
+                    </label>
+                    <input type="text" name="custom_engraving" maxlength="40" placeholder="e.g. 'Good Morning Sarah' or 'Coffee First'" 
+                           class="w-full bg-stone-50 border border-stone-300 rounded-xl px-4 py-2.5 text-xs text-stone-800 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-clay-500">
+                    <p class="text-[10px] text-stone-400 mt-1">Laser engraved on the outer ceramic base before dispatch.</p>
+                </div>
+                {% endif %}
+
+                <!-- Quantity & Buttons -->
+                <div class="flex items-center gap-4">
+                    <!-- Qty Stepper -->
+                    <div class="flex items-center border border-stone-300 rounded-xl bg-stone-50 overflow-hidden">
+                        <button type="button" onclick="const q = document.getElementById('qty-input'); if(q.value > 1) q.value--;" class="px-3.5 py-3 hover:bg-stone-200 text-stone-700 transition font-bold text-sm">-</button>
+                        <input type="number" id="qty-input" name="quantity" value="1" min="1" max="{{ product.stock }}" class="w-12 text-center bg-transparent text-xs font-bold text-stone-800 focus:outline-none">
+                        <button type="button" onclick="const q = document.getElementById('qty-input'); q.value++;" class="px-3.5 py-3 hover:bg-stone-200 text-stone-700 transition font-bold text-sm">+</button>
+                    </div>
+
+                    <!-- Add To Cart Submit -->
+                    <button type="submit" class="flex-grow py-3.5 bg-clay-700 hover:bg-clay-800 text-white font-bold rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                        <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                        <span>Add To Shopping Cart</span>
+                    </button>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- Reviews Section -->
+    <div id="reviews" class="mt-20 pt-12 border-t border-stone-200">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            
+            <!-- Left: Reviews List -->
+            <div class="lg:col-span-7 space-y-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-stone-900">Customer Reviews ({{ reviews.count }})</h2>
+                    <div class="flex items-center gap-1 text-amber-500 font-bold text-sm">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <span>{{ product.rating }} / 5.0</span>
+                    </div>
+                </div>
+
+                {% if reviews %}
+                <div class="space-y-4">
+                    {% for rev in reviews %}
+                    <div class="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-sm">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-bold text-sm text-stone-900">{{ rev.user_name }}</span>
+                            <span class="text-[11px] text-stone-400">{{ rev.created_at|date:"M d, Y" }}</span>
+                        </div>
+                        <div class="flex text-amber-500 mb-2">
+                            {% for i in "12345" %}
+                            {% if forloop.counter <= rev.rating %}
+                            <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        <p class="text-xs text-stone-600 leading-relaxed">{{ rev.comment }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-xs text-stone-500 italic">No reviews yet for this model. Be the first to share your experience!</p>
+                {% endif %}
+            </div>
+
+            <!-- Right: Write Review Form -->
+            <div class="lg:col-span-5 bg-white p-6 rounded-3xl border border-stone-200/80 shadow-sm h-fit">
+                <h3 class="font-heading font-bold text-lg text-stone-900 mb-2">Leave a Verified Review</h3>
+                <p class="text-xs text-stone-500 mb-4">Tell fellow coffee enthusiasts how this mug feels and performs.</p>
+
+                <form method="POST" class="space-y-3">
+                    {% csrf_token %}
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-700 mb-1">Your Name</label>
+                        <input type="text" name="user_name" required placeholder="e.g. Alex M." class="w-full bg-stone-50 border border-stone-200 rounded-xl p-2.5 text-xs text-stone-800 focus:outline-none focus:ring-1 focus:ring-clay-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-700 mb-1">Rating</label>
+                        <select name="rating" class="w-full bg-stone-50 border border-stone-200 rounded-xl p-2.5 text-xs text-stone-800 focus:outline-none focus:ring-1 focus:ring-clay-500">
+                            <option value="5">★★★★★ (5/5 Exceptional Craftsmanship)</option>
+                            <option value="4">★★★★☆ (4/5 Great Quality)</option>
+                            <option value="3">★★★☆☆ (3/5 Average)</option>
+                            <option value="2">★★☆☆☆ (2/5 Below Expectation)</option>
+                            <option value="1">★☆☆☆☆ (1/5 Unsatisfied)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-700 mb-1">Your Review</label>
+                        <textarea name="comment" required rows="3" placeholder="How does it feel in hand? Glaze quality, heat retention..." class="w-full bg-stone-50 border border-stone-200 rounded-xl p-2.5 text-xs text-stone-800 focus:outline-none focus:ring-1 focus:ring-clay-500"></textarea>
+                    </div>
+
+                    <button type="submit" name="submit_review" class="w-full py-2.5 bg-stone-900 hover:bg-stone-800 text-white font-semibold rounded-xl text-xs uppercase tracking-wider transition">
+                        Post Review
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    {% if related_products %}
+    <div class="mt-20 pt-12 border-t border-stone-200">
+        <h2 class="text-2xl font-bold text-stone-900 mb-8">More from {{ product.category.name }}</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {% for rel in related_products %}
+            <a href="{% url 'product_detail' slug=rel.slug %}" class="bg-white rounded-2xl overflow-hidden border border-stone-200/80 shadow-sm hover:shadow-lg transition group">
+                <div class="aspect-square bg-stone-50 overflow-hidden">
+                    <img src="{{ rel.image_url }}" alt="{{ rel.name }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                </div>
+                <div class="p-4">
+                    <h3 class="font-heading font-bold text-sm text-stone-900 group-hover:text-clay-700 transition">{{ rel.name }}</h3>
+                    <div class="font-bold text-stone-900 text-sm mt-1">${{ rel.effective_price }}</div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

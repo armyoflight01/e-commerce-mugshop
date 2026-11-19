@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+
+{% block title %}KILN & CO. | Handcrafted Pottery & Artisanal Mugs{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative overflow-hidden bg-gradient-to-b from-clay-100/60 via-[#FAF8F5] to-[#FAF8F5] py-16 sm:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <!-- Left Headline & CTA -->
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-clay-200/70 border border-clay-300 text-clay-900 text-xs font-semibold uppercase tracking-wider">
+                    <span class="w-2 h-2 rounded-full bg-terracotta-500 animate-ping"></span>
+                    Small-Batch Kiln Drop Live
+                </div>
+                
+                <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-stone-900 leading-[1.15]">
+                    Crafted by Fire, <br/>
+                    <span class="text-clay-700 underline decoration-clay-300 underline-offset-8">Made for Your Morning.</span>
+                </h1>
+                
+                <p class="text-lg text-stone-600 max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                    Elevate your daily coffee ritual with wheel-thrown stoneware ceramics, double-wall thermal travel tumblers, and vintage enamel mugs. Built to hold heat and comfort your hands.
+                </p>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                    <a href="{% url 'product_list' %}" class="w-full sm:w-auto px-8 py-4 bg-clay-700 hover:bg-clay-800 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 group">
+                        <span>Explore Collection</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    <a href="{% url 'product_list' %}?sort=bestseller" class="w-full sm:w-auto px-8 py-4 bg-white hover:bg-stone-50 text-stone-800 border border-stone-200 font-semibold rounded-2xl shadow-sm transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="award" class="w-4 h-4 text-amber-500"></i>
+                        <span>View Bestsellers</span>
+                    </a>
+                </div>
+
+                <!-- Trust Badges -->
+                <div class="pt-8 border-t border-stone-200/80 grid grid-cols-3 gap-4 text-left max-w-lg mx-auto lg:mx-0">
+                    <div>
+                        <div class="font-heading font-bold text-xl text-stone-900">1250°C</div>
+                        <div class="text-xs text-stone-500 font-medium">Kiln Fired Durability</div>
+                    </div>
+                    <div>
+                        <div class="font-heading font-bold text-xl text-stone-900">100%</div>
+                        <div class="text-xs text-stone-500 font-medium">Non-Toxic &amp; Food Safe</div>
+                    </div>
+                    <div>
+                        <div class="font-heading font-bold text-xl text-stone-900">4.9 ★</div>
+                        <div class="text-xs text-stone-500 font-medium">Over 2,500+ Reviews</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Hero Image Display -->
+            <div class="lg:col-span-5 relative">
+                <div class="relative mx-auto max-w-md lg:max-w-none">
+                    <!-- Glow background -->
+                    <div class="absolute -top-10 -left-10 w-72 h-72 bg-clay-300/40 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <!-- Main Hero Image Card -->
+                    <div class="relative bg-white p-3 rounded-3xl shadow-2xl border border-stone-100 transform hover:-rotate-1 transition-transform duration-300">
+                        <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=1000&q=85" 
+                             alt="Artisanal Handcrafted Ceramic Mug" 
+                             class="w-full h-96 object-cover rounded-2xl">
+                        
+                        <!-- Floating Pill 1 -->
+                        <div class="absolute -bottom-5 -left-5 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl shadow-xl border border-stone-100 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold">
+                                <i data-lucide="flame" class="w-5 h-5 text-amber-600"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-stone-900">Hand-Thrown Ceramic</div>
+                                <div class="text-[11px] text-stone-500">Dishwasher &amp; Microwave Safe</div>
+                            </div>
+                        </div>
+
+                        <!-- Floating Pill 2 -->
+                        <div class="absolute -top-4 -right-4 bg-clay-800 text-white px-4 py-2 rounded-2xl shadow-lg flex items-center gap-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-300">New Release</span>
+                            <span class="text-sm font-extrabold">$24.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Shop By Category Section -->
+<section class="py-16 bg-white border-y border-stone-200/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
+            <div>
+                <span class="text-clay-600 font-bold uppercase text-xs tracking-wider">Explore By Collection</span>
+                <h2 class="text-3xl font-bold text-stone-900 mt-1">Thoughtfully Designed Drinkware</h2>
+            </div>
+            <a href="{% url 'product_list' %}" class="mt-4 md:mt-0 text-sm font-semibold text-clay-700 hover:text-clay-900 flex items-center gap-1 group">
+                Browse All Categories <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {% for cat in categories %}
+            <a href="{% url 'product_list' %}?category={{ cat.slug }}" class="group relative rounded-2xl overflow-hidden bg-stone-100 aspect-square shadow-sm hover:shadow-xl transition-all duration-300">
+                <img src="{{ cat.image_url }}" alt="{{ cat.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <span class="text-xs text-amber-300 font-semibold uppercase tracking-wider">{{ cat.products.count }} Models</span>
+                    <h3 class="font-heading font-bold text-xl mt-1 text-white group-hover:text-amber-200 transition">{{ cat.name }}</h3>
+                    <p class="text-xs text-stone-300 mt-1 line-clamp-1 font-light">{{ cat.description }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Featured Mugs Collection -->
+<section class="py-20 bg-[#FAF8F5]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-14">
+            <span class="text-clay-600 font-bold uppercase text-xs tracking-wider">Curated Selection</span>
+            <h2 class="text-3xl sm:text-4xl font-bold text-stone-900 mt-1">Featured Artisan Mugs</h2>
+            <p class="text-stone-600 text-sm mt-3">Individual works of art sculpted for everyday function and comforting moments.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for product in featured_products %}
+            <div class="bg-white rounded-3xl overflow-hidden border border-stone-200/70 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
+                
+                <!-- Product Image & Badges -->
+                <div class="relative overflow-hidden aspect-square bg-stone-50">
+                    <a href="{% url 'product_detail' slug=product.slug %}">
+                        <img src="{{ product.image_url }}" alt="{{ product.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </a>
+
+                    <!-- Top Left Badges -->
+                    <div class="absolute top-4 left-4 flex flex-col gap-2">
+                        {% if product.discount_percent > 0 %}
+                        <span class="bg-terracotta-500 text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-md">
+                            Save {{ product.discount_percent }}%
+                        </span>
+                        {% endif %}
+                        {% if product.is_bestseller %}
+                        <span class="bg-amber-500 text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-md flex items-center gap-1">
+                            <i data-lucide="flame" class="w-3 h-3"></i> Bestseller
+                        </span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Quick View Overlay -->
+                    <a href="{% url 'product_detail' slug=product.slug %}" class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="bg-white/90 backdrop-blur-sm text-stone-900 font-semibold text-xs px-4 py-2 rounded-full shadow-md hover:bg-white transition">
+                            View Details
+                        </span>
+                    </a>
+                </div>
+
+                <!-- Product Info -->
+                <div class="p-6 flex flex-col flex-grow">
+                    <div class="flex items-center justify-between text-xs text-stone-500 mb-2">
+                        <span class="uppercase font-semibold tracking-wider text-clay-600">{{ product.category.name }}</span>
+                        <div class="flex items-center gap-1 text-amber-500">
+                            <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                            <span class="font-bold text-stone-700">{{ product.rating }}</span>
+                            <span class="text-stone-400">({{ product.reviews_count }})</span>
+                        </div>
+                    </div>
+
+                    <h3 class="font-heading font-bold text-lg text-stone-900 group-hover:text-clay-700 transition">
+                        <a href="{% url 'product_detail' slug=product.slug %}">{{ product.name }}</a>
+                    </h3>
+                    
+                    <p class="text-xs text-stone-500 line-clamp-2 mt-1 mb-4 flex-grow">{{ product.tagline }}</p>
+
+                    <!-- Attributes Mini Badges -->
+                    <div class="flex items-center gap-2 mb-4 text-[11px] text-stone-500">
+                        <span class="bg-stone-100 px-2 py-0.5 rounded-md">{{ product.capacity }}</span>
+                        <span class="bg-stone-100 px-2 py-0.5 rounded-md">{{ product.material|truncatewords:2 }}</span>
+                    </div>
+
+                    <!-- Price & Add to Cart -->
+                    <div class="pt-4 border-t border-stone-100 flex items-center justify-between">
+                        <div>
+                            {% if product.discount_price %}
+                            <div class="flex items-baseline gap-2">
+                                <span class="font-heading font-bold text-xl text-stone-900">${{ product.discount_price }}</span>
+                                <span class="text-xs text-stone-400 line-through">${{ product.price }}</span>
+                            </div>
+                            {% else %}
+                            <span class="font-heading font-bold text-xl text-stone-900">${{ product.price }}</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Add to Cart Form -->
+                        <form action="{% url 'cart_add' product_id=product.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="w-10 h-10 rounded-xl bg-clay-700 hover:bg-clay-800 text-white flex items-center justify-center transition shadow-sm hover:shadow group/btn" title="Add to Cart">
+                                <i data-lucide="shopping-bag" class="w-4 h-4 group-hover/btn:scale-110 transition-transform"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-12">
+            <a href="{% url 'product_list' %}" class="inline-flex items-center gap-2 px-8 py-3.5 bg-stone-900 hover:bg-stone-800 text-white font-semibold rounded-2xl shadow-md transition">
+                <span>View Full Collection ({{ total_count|default:"8" }} Mugs)</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Kiln & Co Feature Grid -->
+<section class="py-20 bg-clay-100/70 border-y border-clay-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <span class="text-clay-700 font-bold uppercase text-xs tracking-wider">Uncompromising Standards</span>
+            <h2 class="text-3xl font-bold text-stone-900 mt-1">Why Our Mugs Savor Different</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-clay-200/60 text-center">
+                <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="flame" class="w-7 h-7 text-amber-700"></i>
+                </div>
+                <h3 class="font-heading font-bold text-lg text-stone-900 mb-2">High-Fire Kiln Fired</h3>
+                <p class="text-xs text-stone-600 leading-relaxed">Fired at 1250°C for impervious non-porous density that resists staining, odors, and surface scratches.</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-clay-200/60 text-center">
+                <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="shield-check" class="w-7 h-7 text-emerald-700"></i>
+                </div>
+                <h3 class="font-heading font-bold text-lg text-stone-900 mb-2">Non-Toxic &amp; Food-Safe</h3>
+                <p class="text-xs text-stone-600 leading-relaxed">Certified 100% lead-free and cadmium-free glazes made with pure mineral earth pigments.</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-clay-200/60 text-center">
+                <div class="w-14 h-14 rounded-2xl bg-sky-100 text-sky-800 flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="sparkles" class="w-7 h-7 text-sky-700"></i>
+                </div>
+                <h3 class="font-heading font-bold text-lg text-stone-900 mb-2">Custom Engraving</h3>
+                <p class="text-xs text-stone-600 leading-relaxed">Add personalized names, monograms, or meaningful dates laser-etched onto your custom mug.</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-clay-200/60 text-center">
+                <div class="w-14 h-14 rounded-2xl bg-stone-100 text-stone-800 flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="package-check" class="w-7 h-7 text-stone-700"></i>
+                </div>
+                <h3 class="font-heading font-bold text-lg text-stone-900 mb-2">Zero-Breakage Packing</h3>
+                <p class="text-xs text-stone-600 leading-relaxed">Shipped in 100% recyclable honeycomb shock-absorbent packaging with a guaranteed safe arrival promise.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Callout Promo Banner -->
+<section class="py-16 bg-[#FAF8F5]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative bg-clay-800 rounded-3xl p-8 sm:p-14 text-white overflow-hidden shadow-2xl">
+            <div class="relative z-10 max-w-xl">
+                <span class="inline-block bg-clay-700 text-amber-300 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">Limited Promotion</span>
+                <h2 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4">Take 10% Off Your First Kiln-Crafted Mug</h2>
+                <p class="text-clay-200 text-sm mb-6 leading-relaxed">Use coupon code <strong class="bg-clay-900/80 px-2.5 py-1 rounded-lg text-amber-300 font-mono text-base border border-clay-600">MUG10</strong> during checkout to redeem your welcome discount.</p>
+                <div class="flex flex-wrap gap-4 items-center">
+                    <a href="{% url 'product_list' %}" class="px-8 py-3.5 bg-amber-400 hover:bg-amber-300 text-stone-950 font-bold rounded-2xl transition shadow-lg">
+                        Shop Collection Now
+                    </a>
+                    <span class="text-xs text-clay-300">Free shipping applies over $50</span>
+                </div>
+            </div>
+            
+            <!-- Abstract Pottery Silhouette -->
+            <div class="absolute -right-10 -bottom-10 opacity-15 pointer-events-none hidden lg:block">
+                <i data-lucide="coffee" class="w-96 h-96 text-white"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Customer Reviews Section -->
+<section class="py-20 bg-white border-t border-stone-200/70">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-14">
+            <span class="text-clay-600 font-bold uppercase text-xs tracking-wider">Testimonials</span>
+            <h2 class="text-3xl font-bold text-stone-900 mt-1">Loved by Coffee Lovers &amp; Ceramic Fans</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {% for review in recent_reviews %}
+            <div class="bg-stone-50 p-6 rounded-2xl border border-stone-200/80 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-1 text-amber-500 mb-3">
+                        {% for i in "12345" %}
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        {% endfor %}
+                    </div>
+                    <p class="text-xs text-stone-700 italic leading-relaxed mb-4">"{{ review.comment }}"</p>
+                </div>
+                <div class="pt-3 border-t border-stone-200/60 flex items-center justify-between text-xs">
+                    <span class="font-bold text-stone-900">{{ review.user_name }}</span>
+                    <span class="text-stone-400 text-[10px]">{{ review.product.name|truncatewords:2 }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

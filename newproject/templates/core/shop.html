@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+
+{% block title %}Shop Handcrafted Ceramic &amp; Travel Mugs | KILN &amp; CO.{% endblock %}
+
+{% block content %}
+<div class="bg-clay-100/50 py-10 border-b border-stone-200/70">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <nav class="text-xs text-stone-500 mb-2 flex items-center gap-1.5">
+                    <a href="{% url 'home' %}" class="hover:text-clay-700">Home</a>
+                    <span>/</span>
+                    <span class="text-stone-800 font-semibold">Shop Collection</span>
+                    {% if selected_category %}
+                    <span>/</span>
+                    <span class="text-clay-700 font-semibold">{{ selected_category.name }}</span>
+                    {% endif %}
+                </nav>
+                <h1 class="text-3xl font-extrabold text-stone-900 tracking-tight">
+                    {% if selected_category %}{{ selected_category.name }}{% else %}All Artisan Mugs{% endif %}
+                </h1>
+                <p class="text-xs text-stone-600 mt-1">
+                    Showing {{ total_count }} handcrafted pieces
+                </p>
+            </div>
+
+            <!-- Sorting Dropdown -->
+            <form method="GET" class="flex items-center gap-2 self-start md:self-auto">
+                {% if selected_category %}<input type="hidden" name="category" value="{{ selected_category.slug }}">{% endif %}
+                {% if query %}<input type="hidden" name="q" value="{{ query }}">{% endif %}
+                <label for="sort" class="text-xs font-semibold text-stone-600 whitespace-nowrap">Sort By:</label>
+                <select name="sort" id="sort" onchange="this.form.submit()" class="bg-white border border-stone-300 rounded-xl px-3 py-2 text-xs font-medium text-stone-800 focus:outline-none focus:ring-2 focus:ring-clay-500">
+                    <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest Kiln Arrivals</option>
+                    <option value="bestseller" {% if sort == 'bestseller' %}selected{% endif %}>Bestselling</option>
+                    <option value="price-low" {% if sort == 'price-low' %}selected{% endif %}>Price: Low to High</option>
+                    <option value="price-high" {% if sort == 'price-high' %}selected{% endif %}>Price: High to Low</option>
+                    <option value="rating" {% if sort == 'rating' %}selected{% endif %}>Highest Rated</option>
+                </select>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        
+        <!-- Sidebar Filters -->
+        <aside class="space-y-8">
+            
+            <!-- Category Filter Box -->
+            <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm">
+                <h3 class="font-heading font-bold text-sm text-stone-900 uppercase tracking-wider mb-4">Categories</h3>
+                <ul class="space-y-2 text-xs font-medium">
+                    <li>
+                        <a href="{% url 'product_list' %}" class="flex items-center justify-between py-1.5 px-2.5 rounded-lg transition {% if not selected_category %}bg-clay-100 text-clay-900 font-bold{% else %}text-stone-600 hover:bg-stone-50{% endif %}">
+                            <span>All Collections</span>
+                        </a>
+                    </li>
+                    {% for cat in categories %}
+                    <li>
+                        <a href="{% url 'product_list' %}?category={{ cat.slug }}" class="flex items-center justify-between py-1.5 px-2.5 rounded-lg transition {% if selected_category.slug == cat.slug %}bg-clay-100 text-clay-900 font-bold{% else %}text-stone-600 hover:bg-stone-50{% endif %}">
+                            <span>{{ cat.name }}</span>
+                            <span class="text-[11px] text-stone-400">({{ cat.products.count }})</span>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Price Filter Box -->
+            <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm">
+                <h3 class="font-heading font-bold text-sm text-stone-900 uppercase tracking-wider mb-4">Filter By Price</h3>
+                <form method="GET" class="space-y-3">
+                    {% if selected_category %}<input type="hidden" name="category" value="{{ selected_category.slug }}">{% endif %}
+                    {% if query %}<input type="hidden" name="q" value="{{ query }}">{% endif %}
+                    {% if sort %}<input type="hidden" name="sort" value="{{ sort }}">{% endif %}
+                    
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="text-[11px] text-stone-500 font-medium">Min ($)</label>
+                            <input type="number" step="1" name="min_price" value="{{ min_price }}" placeholder="15" class="w-full bg-stone-50 border border-stone-200 rounded-lg p-2 text-xs focus:ring-1 focus:ring-clay-500">
+                        </div>
+                        <div>
+                            <label class="text-[11px] text-stone-500 font-medium">Max ($)</label>
+                            <input type="number" step="1" name="max_price" value="{{ max_price }}" placeholder="45" class="w-full bg-stone-50 border border-stone-200 rounded-lg p-2 text-xs focus:ring-1 focus:ring-clay-500">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold py-2 rounded-xl transition">
+                        Apply Filter
+                    </button>
+                    {% if min_price or max_price or query %}
+                    <a href="{% url 'product_list' %}{% if selected_category %}?category={{ selected_category.slug }}{% endif %}" class="block text-center text-[11px] text-stone-500 hover:text-stone-800 pt-1">
+                        Clear Filters
+                    </a>
+                    {% endif %}
+                </form>
+            </div>
+
+            <!-- Studio Guarantee Banner -->
+            <div class="bg-clay-800 text-clay-100 p-6 rounded-2xl shadow-sm space-y-3">
+                <div class="flex items-center gap-2 text-amber-300 font-bold text-xs uppercase tracking-wider">
+                    <i data-lucide="package-check" class="w-4 h-4"></i>
+                    <span>Arrival Guarantee</span>
+                </div>
+                <p class="text-xs text-clay-200 leading-relaxed">
+                    Every piece is bubble &amp; honeycomb insulated. In the rare event of breakage during transit, we replace it instantly for free.
+                </p>
+            </div>
+
+        </aside>
+
+        <!-- Product Grid -->
+        <main class="lg:col-span-3">
+            
+            {% if query %}
+            <div class="mb-6 bg-white p-4 rounded-xl border border-stone-200 flex items-center justify-between text-xs text-stone-700">
+                <span>Showing search results for: <strong>"{{ query }}"</strong></span>
+                <a href="{% url 'product_list' %}" class="text-clay-700 font-semibold hover:underline">Clear Search</a>
+            </div>
+            {% endif %}
+
+            {% if products %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for product in products %}
+                <div class="bg-white rounded-2xl overflow-hidden border border-stone-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
+                    
+                    <!-- Product Image -->
+                    <div class="relative aspect-square overflow-hidden bg-stone-50">
+                        <a href="{% url 'product_detail' slug=product.slug %}">
+                            <img src="{{ product.image_url }}" alt="{{ product.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </a>
+
+                        <!-- Badges -->
+                        <div class="absolute top-3 left-3 flex flex-col gap-1.5">
+                            {% if product.discount_percent > 0 %}
+                            <span class="bg-terracotta-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
+                                -{{ product.discount_percent }}%
+                            </span>
+                            {% endif %}
+                            {% if product.is_bestseller %}
+                            <span class="bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
+                                Popular
+                            </span>
+                            {% endif %}
+                        </div>
+
+                        {% if product.stock <= 5 and product.stock > 0 %}
+                        <span class="absolute bottom-3 left-3 bg-rose-600 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">
+                            Only {{ product.stock }} left!
+                        </span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Details -->
+                    <div class="p-5 flex flex-col flex-grow">
+                        <div class="flex items-center justify-between text-[11px] text-stone-500 mb-1.5">
+                            <span class="text-clay-700 font-semibold uppercase">{{ product.category.name }}</span>
+                            <div class="flex items-center gap-1 text-amber-500">
+                                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                                <span class="font-bold text-stone-700">{{ product.rating }}</span>
+                            </div>
+                        </div>
+
+                        <h3 class="font-heading font-bold text-base text-stone-900 group-hover:text-clay-700 transition">
+                            <a href="{% url 'product_detail' slug=product.slug %}">{{ product.name }}</a>
+                        </h3>
+
+                        <p class="text-xs text-stone-500 line-clamp-1 mt-1 mb-3 flex-grow">{{ product.tagline }}</p>
+
+                        <!-- Price & Action -->
+                        <div class="pt-3 border-t border-stone-100 flex items-center justify-between mt-auto">
+                            <div>
+                                {% if product.discount_price %}
+                                <div class="flex items-baseline gap-1.5">
+                                    <span class="font-heading font-bold text-lg text-stone-900">${{ product.discount_price }}</span>
+                                    <span class="text-[11px] text-stone-400 line-through">${{ product.price }}</span>
+                                </div>
+                                {% else %}
+                                <span class="font-heading font-bold text-lg text-stone-900">${{ product.price }}</span>
+                                {% endif %}
+                            </div>
+
+                            <form action="{% url 'cart_add' product_id=product.id %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="w-9 h-9 rounded-xl bg-clay-700 hover:bg-clay-800 text-white flex items-center justify-center transition shadow-sm" title="Add to Cart">
+                                    <i data-lucide="plus" class="w-4 h-4"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                {% endfor %}
+            </div>
+
+            {% else %}
+            <!-- Empty Results -->
+            <div class="bg-white rounded-3xl p-12 text-center border border-stone-200">
+                <div class="w-16 h-16 rounded-full bg-clay-100 text-clay-600 flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="search-x" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-heading font-bold text-xl text-stone-900 mb-2">No Mugs Found</h3>
+                <p class="text-xs text-stone-500 max-w-sm mx-auto mb-6">
+                    We couldn't find any ceramic pieces matching your exact filter criteria.
+                </p>
+                <a href="{% url 'product_list' %}" class="px-6 py-2.5 bg-clay-700 hover:bg-clay-800 text-white text-xs font-semibold rounded-xl transition shadow">
+                    Reset All Filters
+                </a>
+            </div>
+            {% endif %}
+
+        </main>
+
+    </div>
+</div>
+{% endblock %}

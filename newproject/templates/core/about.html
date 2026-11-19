@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Our Craft &amp; Pottery Philosophy | KILN & CO.{% endblock %}
+
+{% block content %}
+<div class="py-16 bg-[#FAF8F5]">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        
+        <!-- Story Headline -->
+        <div class="text-center max-w-2xl mx-auto">
+            <span class="text-clay-600 font-bold uppercase text-xs tracking-wider">The Ceramic Studio</span>
+            <h1 class="text-4xl font-extrabold text-stone-900 tracking-tight mt-1">Shaped by Hands, Fired for Life</h1>
+            <p class="text-stone-600 text-sm mt-3 leading-relaxed">
+                Founded on the belief that everyday objects should bring peace, tactile joy, and quiet contemplation to our daily rituals.
+            </p>
+        </div>
+
+        <!-- Studio Images Collage -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div class="rounded-3xl overflow-hidden shadow-lg border border-stone-200">
+                <img src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=800&q=80" 
+                     alt="Artisan shaping ceramic mug on pottery wheel" class="w-full h-80 object-cover">
+            </div>
+            <div class="space-y-4 text-stone-600 text-sm leading-relaxed">
+                <h3 class="font-heading font-bold text-2xl text-stone-900">Slow Craft in a Fast World</h3>
+                <p>
+                    Each mug in our collection starts as an unformed lump of raw mineral stoneware clay. Centered on the potter’s wheel, it is thrown, shaped, trimmed, and fitted with an ergonomic handle contoured for human fingers.
+                </p>
+                <p>
+                    After slow air-drying, our mugs undergo two kiln firings: a bisque fire at 950°C and a final high-fire glaze at 1250°C that vitrifies the stoneware, rendering it non-porous and microwave safe.
+                </p>
+            </div>
+        </div>
+
+        <!-- Four Principles Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8">
+            <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm text-center">
+                <div class="w-12 h-12 rounded-xl bg-clay-100 text-clay-700 flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="droplet" class="w-6 h-6"></i>
+                </div>
+                <h4 class="font-heading font-bold text-base text-stone-900 mb-1">Mineral Glazes</h4>
+                <p class="text-xs text-stone-500">Natural earth oxides create subtle speckles and organic shade transitions without harmful chemicals.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm text-center">
+                <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="thermometer" class="w-6 h-6"></i>
+                </div>
+                <h4 class="font-heading font-bold text-base text-stone-900 mb-1">Thermal Density</h4>
+                <p class="text-xs text-stone-500">Thick ceramic walls retain heat significantly longer than commercial factory pressed cups.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm text-center">
+                <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="leaf" class="w-6 h-6"></i>
+                </div>
+                <h4 class="font-heading font-bold text-base text-stone-900 mb-1">Plastic-Free</h4>
+                <p class="text-xs text-stone-500">Packed strictly in compostable kraft paper, cornstarch peanuts, and recycled cardboard boxes.</p>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="bg-clay-800 text-white rounded-3xl p-10 text-center space-y-4">
+            <h3 class="font-heading font-bold text-2xl text-white">Find Your Everyday Mug</h3>
+            <p class="text-xs text-clay-200 max-w-md mx-auto">Explore our range of hand-thrown stoneware ceramics and double-wall insulated travel mugs.</p>
+            <a href="{% url 'product_list' %}" class="inline-flex px-8 py-3.5 bg-amber-400 hover:bg-amber-300 text-stone-950 font-bold rounded-xl text-xs uppercase tracking-wider transition shadow-md">
+                Browse Full Catalog
+            </a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

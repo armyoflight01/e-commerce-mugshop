@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}Order Confirmed #{{ order.order_number }} | KILN & CO.{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    
+    <!-- Success Banner -->
+    <div class="bg-white rounded-3xl p-8 sm:p-12 border border-stone-200/80 shadow-sm text-center mb-10">
+        <div class="w-20 h-20 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-6 shadow-sm">
+            <i data-lucide="check" class="w-10 h-10 stroke-[2.5]"></i>
+        </div>
+
+        <span class="inline-block bg-clay-100 text-clay-800 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">
+            Order Placed Successfully
+        </span>
+
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">Thank You for Supporting Handcrafted Pottery!</h1>
+        <p class="text-xs sm:text-sm text-stone-500 max-w-md mx-auto mt-2 leading-relaxed">
+            Your order is confirmed and our ceramic team is preparing your package for safe transit.
+        </p>
+
+        <!-- Order Number Badge -->
+        <div class="inline-flex items-center gap-2 bg-stone-50 border border-stone-200 px-6 py-3 rounded-2xl mt-6">
+            <span class="text-xs text-stone-500 font-semibold uppercase">Tracking Number:</span>
+            <span class="font-mono font-bold text-stone-900 text-base tracking-wider">{{ order.order_number }}</span>
+        </div>
+    </div>
+
+    <!-- Order Receipt & Details -->
+    <div class="bg-white rounded-3xl p-8 border border-stone-200/80 shadow-sm space-y-8">
+        
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs pb-6 border-b border-stone-100">
+            <div>
+                <span class="text-stone-400 block mb-1">Order Date</span>
+                <span class="font-bold text-stone-800 text-sm">{{ order.created_at|date:"F d, Y - g:i A" }}</span>
+            </div>
+            <div>
+                <span class="text-stone-400 block mb-1">Payment Method</span>
+                <span class="font-bold text-stone-800 text-sm uppercase">{{ order.get_payment_method_display }}</span>
+            </div>
+            <div>
+                <span class="text-stone-400 block mb-1">Fulfillment Status</span>
+                <span class="inline-flex items-center gap-1.5 font-bold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full text-xs">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> {{ order.status }}
+                </span>
+            </div>
+        </div>
+
+        <!-- Items Ordered -->
+        <div>
+            <h3 class="font-heading font-bold text-base text-stone-900 mb-4">Mugs in This Order</h3>
+            <div class="divide-y divide-stone-100">
+                {% for item in items %}
+                <div class="py-4 flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-4">
+                        {% if item.product_image %}
+                        <img src="{{ item.product_image }}" class="w-14 h-14 rounded-xl object-cover bg-stone-50 border border-stone-100">
+                        {% endif %}
+                        <div>
+                            <span class="font-bold text-stone-900 text-sm block">{{ item.product_name }}</span>
+                            <span class="text-stone-500 text-[11px]">Qty: {{ item.quantity }} × ${{ item.price }}</span>
+                            {% if item.custom_engraving %}
+                            <div class="text-[11px] text-amber-800 italic mt-0.5">Laser Engraved: "{{ item.custom_engraving }}"</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <span class="font-bold text-stone-900 text-sm">${{ item.total_price }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Shipping & Delivery Breakdown -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-stone-100 text-xs">
+            
+            <div class="space-y-2">
+                <h4 class="font-bold text-stone-900 uppercase tracking-wider text-[11px]">Shipping Destination</h4>
+                <div class="text-stone-600 leading-relaxed bg-stone-50 p-4 rounded-2xl border border-stone-100">
+                    <div class="font-bold text-stone-900">{{ order.full_name }}</div>
+                    <div>{{ order.address }}</div>
+                    <div>{{ order.city }}, {{ order.state }} {{ order.postal_code }}</div>
+                    <div class="mt-2 text-stone-500">Email: {{ order.email }} • Phone: {{ order.phone }}</div>
+                    {% if order.order_notes %}
+                    <div class="mt-2 pt-2 border-t border-stone-200 text-amber-800 italic">Notes: "{{ order.order_notes }}"</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="space-y-2.5">
+                <h4 class="font-bold text-stone-900 uppercase tracking-wider text-[11px]">Payment Summary</h4>
+                <div class="bg-stone-50 p-4 rounded-2xl border border-stone-100 space-y-2">
+                    <div class="flex justify-between text-stone-600">
+                        <span>Subtotal</span>
+                        <span class="font-semibold text-stone-900">${{ order.subtotal }}</span>
+                    </div>
+                    {% if order.discount > 0 %}
+                    <div class="flex justify-between text-emerald-700 font-semibold">
+                        <span>Discount Applied</span>
+                        <span>-${{ order.discount }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="flex justify-between text-stone-600">
+                        <span>Shipping Delivery</span>
+                        <span>{% if order.shipping_fee == 0 %}FREE{% else %}${{ order.shipping_fee }}{% endif %}</span>
+                    </div>
+                    <div class="flex justify-between pt-2 border-t border-stone-200 font-bold text-stone-900 text-sm">
+                        <span>Total Paid</span>
+                        <span class="text-base font-extrabold text-clay-800">${{ order.total }}</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Action Links -->
+        <div class="pt-6 border-t border-stone-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="{% url 'product_list' %}" class="w-full sm:w-auto px-6 py-3 bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold rounded-xl text-center transition">
+                &larr; Return to Mug Catalog
+            </a>
+            <div class="flex gap-3 w-full sm:w-auto">
+                <button onclick="window.print()" class="px-5 py-3 border border-stone-200 hover:bg-stone-50 text-stone-700 text-xs font-semibold rounded-xl transition flex items-center justify-center gap-1.5 flex-1 sm:flex-none">
+                    <i data-lucide="printer" class="w-4 h-4"></i> Print Receipt
+                </button>
+                <a href="{% url 'track_order' %}?order_number={{ order.order_number }}" class="px-6 py-3 bg-clay-700 hover:bg-clay-800 text-white text-xs font-semibold rounded-xl transition flex items-center justify-center gap-1.5 flex-1 sm:flex-none">
+                    <i data-lucide="truck" class="w-4 h-4"></i> Live Tracking
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

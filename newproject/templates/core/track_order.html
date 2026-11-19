@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Track Your Mug Order | KILN & CO.{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    
+    <div class="text-center max-w-xl mx-auto mb-10">
+        <span class="text-clay-600 font-bold uppercase text-xs tracking-wider">Order Status</span>
+        <h1 class="text-3xl font-extrabold text-stone-900 tracking-tight mt-1">Track Your Delivery</h1>
+        <p class="text-xs sm:text-sm text-stone-500 mt-2">
+            Enter your order tracking code (e.g. <span class="font-mono text-clay-700 font-bold">MUG-XXXXXXXX</span>) to check fulfillment &amp; shipment updates.
+        </p>
+
+        <!-- Search Form -->
+        <form method="GET" class="mt-6 flex gap-2">
+            <input type="text" name="order_number" value="{{ query }}" required placeholder="Enter Order # (e.g. MUG-E5B2109A)" 
+                   class="flex-grow bg-white border border-stone-300 rounded-2xl px-5 py-3.5 text-xs text-stone-800 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-clay-500 uppercase font-mono shadow-sm">
+            <button type="submit" class="px-6 py-3.5 bg-clay-700 hover:bg-clay-800 text-white font-bold rounded-2xl text-xs uppercase tracking-wider transition shadow-md flex items-center gap-1.5">
+                <i data-lucide="search" class="w-4 h-4"></i>
+                <span>Track</span>
+            </button>
+        </form>
+    </div>
+
+    {% if searched and order %}
+    <!-- Order Found Display -->
+    <div class="bg-white rounded-3xl p-8 border border-stone-200/80 shadow-sm space-y-8">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-stone-100 gap-4">
+            <div>
+                <span class="text-xs text-stone-400">Tracking Code</span>
+                <div class="font-mono font-bold text-stone-900 text-xl">{{ order.order_number }}</div>
+            </div>
+            <div class="text-left sm:text-right">
+                <span class="text-xs text-stone-400">Placed on</span>
+                <div class="font-bold text-stone-800 text-sm">{{ order.created_at|date:"M d, Y" }}</div>
+            </div>
+        </div>
+
+        <!-- Visual Tracking Timeline -->
+        <div>
+            <h3 class="font-heading font-bold text-sm text-stone-900 uppercase tracking-wider mb-6">Delivery Progress</h3>
+            
+            <div class="grid grid-cols-4 gap-2 text-center relative">
+                
+                <!-- Step 1: Order Confirmed -->
+                <div class="space-y-2">
+                    <div class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto shadow-sm">
+                        <i data-lucide="check" class="w-5 h-5"></i>
+                    </div>
+                    <div class="text-xs font-bold text-stone-900">Confirmed</div>
+                    <div class="text-[10px] text-stone-400">Order logged</div>
+                </div>
+
+                <!-- Step 2: Processing -->
+                <div class="space-y-2">
+                    <div class="w-10 h-10 rounded-full {% if order.status in 'Processing,Shipped,Delivered' %}bg-emerald-600 text-white{% else %}bg-stone-200 text-stone-400{% endif %} flex items-center justify-center mx-auto shadow-sm">
+                        <i data-lucide="package" class="w-5 h-5"></i>
+                    </div>
+                    <div class="text-xs font-bold text-stone-900">Packing</div>
+                    <div class="text-[10px] text-stone-400">Protected wrap</div>
+                </div>
+
+                <!-- Step 3: Shipped -->
+                <div class="space-y-2">
+                    <div class="w-10 h-10 rounded-full {% if order.status in 'Shipped,Delivered' %}bg-emerald-600 text-white{% else %}bg-stone-200 text-stone-400{% endif %} flex items-center justify-center mx-auto shadow-sm">
+                        <i data-lucide="truck" class="w-5 h-5"></i>
+                    </div>
+                    <div class="text-xs font-bold text-stone-900">In Transit</div>
+                    <div class="text-[10px] text-stone-400">Courier en route</div>
+                </div>
+
+                <!-- Step 4: Delivered -->
+                <div class="space-y-2">
+                    <div class="w-10 h-10 rounded-full {% if order.status == 'Delivered' %}bg-emerald-600 text-white{% else %}bg-stone-200 text-stone-400{% endif %} flex items-center justify-center mx-auto shadow-sm">
+                        <i data-lucide="home" class="w-5 h-5"></i>
+                    </div>
+                    <div class="text-xs font-bold text-stone-900">Delivered</div>
+                    <div class="text-[10px] text-stone-400">Ready to sip</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Package Details -->
+        <div class="pt-6 border-t border-stone-100 grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+            <div class="bg-stone-50 p-4 rounded-2xl border border-stone-100">
+                <span class="font-bold text-stone-900 block mb-2 uppercase text-[11px]">Delivery Location</span>
+                <div class="text-stone-700">{{ order.full_name }}</div>
+                <div class="text-stone-500">{{ order.address }}, {{ order.city }}</div>
+            </div>
+
+            <div class="bg-stone-50 p-4 rounded-2xl border border-stone-100">
+                <span class="font-bold text-stone-900 block mb-2 uppercase text-[11px]">Package Contents</span>
+                <div class="text-stone-700">{{ order.items.count }} pottery piece(s)</div>
+                <div class="text-stone-500">Total: ${{ order.total }} • {{ order.get_payment_method_display }}</div>
+            </div>
+        </div>
+
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}
